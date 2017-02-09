@@ -1,0 +1,89 @@
+ASSIGNMENT 5 - LAB
+
+wget http://web.cs.ucla.edu/classes/fall16/cs35L/assign/
+  coreutils-with-bug.tar.gz
+  retrieve specified version of coreutils
+tar -xvf coreutils-with-bug.tar.gz
+  unzip the just downloaded coreutils-with-bug.tar.gz
+cd coreutils-with-bug
+  change into the unzipped directory
+mkdir build
+./configure --prefix="$PWD/build"
+make
+make install
+  this is the error received from make install
+  Making install in lib
+  make[1]: Entering directory `/w/home.12/cs/ugrad/bryanh/Desktop/CS35L/
+    Assignment5/coreutils-with-bug/lib'
+  make  install-am
+  make[2]: Entering directory `/w/home.12/cs/ugrad/bryanh/Desktop/CS35L/
+    Assignment5/coreutils-with-bug/lib'
+  if gcc -DHAVE_CONFIG_H -DLIBDIR=\"/u/cs/ugrad/bryanh/Desktop/CS35L/
+    Assignment5/coreutils-with-bug/build/lib\" -I. -I. -I..  -I.. -I.   -g -O2
+    -MT utimecmp.o -MD -MP -MF ".deps/utimecmp.Tpo" -c -o utimecmp.o
+    utimecmp.c; \
+  	then mv -f ".deps/utimecmp.Tpo" ".deps/utimecmp.Po"; else rm -f
+      ".deps/utimecmp.Tpo"; exit 1; fi
+  In file included from utimecmp.c:41:
+  utimens.h:2: error: conflicting types for 'futimens'
+  /usr/include/sys/stat.h:374: note: previous declaration of 'futimens' was here
+  make[2]: *** [utimecmp.o] Error 1
+  make[2]: Leaving directory `/w/home.12/cs/ugrad/bryanh/Desktop/CS35L/
+    Assignment5/coreutils-with-bug/lib'
+  make[1]: *** [install] Error 2
+  make[1]: Leaving directory `/w/home.12/cs/ugrad/bryanh/Desktop/CS35L/
+    Assignment5/coreutils-with-bug/lib'
+  make: *** [install-recursive] Error 1
+wget http://web.cs.ucla.edu/classes/fall16/cs35L/assign/coreutils.diff
+  retrieve provided patch for coreutils
+patch -p0 coreutils.diff
+  apply just downloaded patch2
+make
+make install
+  after applying the patch, make and make install work fine with no errors
+  looking at the patch we know that the originally downloaded coreutils had
+  conflicting types for "futimens" and previous declarations.
+
+Check the bug:
+cd ..
+mkdir tmp
+touch -d '1917-10-11 11:00 GMT' tmp/bryanh
+touch tmp/now1
+sleep 1
+touch tmp/now2
+  these above commands were provided in the assignment
+  the first touch -d creates a file at that specified date
+./coreutils-with-bug/src/ls -lt ./tmp/bryanh ./tmp/now1 ./tmp/now2
+  run ls -lt using the coreutils on the new files created
+  we see the issue where the oldest file is at the top
+
+To find the issue we must examine the file ./coreutils-with-bug/src/ls.c
+We see that inside ls.c there is a sort_files() method
+
+Debug using GDB:
+gdb --args ./coreutils-with-bug/src/ls -lt ./tmp/bryanh ./tmp/now1 ./tmp/now2
+(gdb) break sort_files
+  sets a breakpoint at the method sort_files we found above
+(gdb) run
+  runs the command we inputted into GDB
+Breakpoint 1, sort_files () at ls.c:2954
+  reached breakpoint we set 2 steps above
+(gdb) s
+  steps into function
+(gdb) n
+  gets into next line
+(gdb) p <varName>
+  prints out value of the specified variable
+After repeated steps of this, we see that we reach a function that compares
+  time and returns cmp_mtime
+After further investigation, we see that there is an arithmetic operation
+  a.tv_sec-b.tv_sec. With understanding of how integers are stored, we know
+  that an integer overflow may occur. We can solve this by using a simple
+  binary representation of 0/1 indicating whether a.tv_sec or b.tv_sec is
+  greater
+mkdir coreutils-bug
+tar -xvf coreutils-with-bug.tar.gz -C coreutils-bug/
+  make a new directory and unzip tar file into coreutils-bug
+On the SEASnet Linux server, since time is stored as how long after 1970 and
+  as 64 bits. When it is truncated to 32 bits, the negative/positive bit is
+  lost, showing a time way in the future

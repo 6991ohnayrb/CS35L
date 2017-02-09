@@ -1,0 +1,53 @@
+#! /bin/bash
+
+#SAVES PWD
+curdir=$pwd
+
+#CHANGES INTO THE DIRECTORY TO BE WORKED ON
+cd $1
+
+#THIS LINE GETS FILES WITH . FIRST, SORTED
+files=($(ls -a . | grep '\.' | sort -u))
+#THIS LINE GETS FILES WITHOUT . IN FRONT, SORTED
+files+=($(ls -a . | grep -v '\.' | sort -u))
+
+#THIS WHILE LOOP ITERATES THROUGH THE SORTED FILES
+i=0
+while [[ i -lt ${#files[@]} ]]; do
+
+	#PRINTS AN ERROR STATEMENT IF NO READ PERMISSION
+	if [ ! -r ${files[i]} ]; then
+		echo "No Read Permission for" ${files[i]}
+
+	#GOES IN THIS STATEMENT IF IT IS NOT A DIRECTORY AND NOT A LINK
+	elif [ ! -d ${files[i]} ] && [ ! -L ${files[i]} ]; then
+
+		#THIS WHILE LOOP ITERATES THROUGH FILES AFTER THE CURRENT ONE
+		j=$((i+1))
+		while [[ j -lt ${#files[@]} ]]; do
+
+			#PRINTS AN ERROR STATEMENT IF NO READ PERMISSION
+			if [ ! -r ${files[j]} ]; then
+				echo "No Read Permission for" ${files[j]}
+
+			#ENTERS IF NOT A DIRECTORY AND NOT A LINK
+			elif [ ! -d ${files[j]} ] && [ ! -L ${files[j]} ]; then
+
+				#COMPARES THE TWO FILES
+				if cmp -s ${files[i]} ${files[j]}; then
+					
+					#REMOVES DUPLICATE
+					rm -f ${files[j]}
+
+					#CREATES SYMBOLIC LINK
+					ln -s ${files[i]} ${files[j]}
+				fi
+			fi
+			j=$((j+1)) #INCREMENT J
+		done
+
+	fi
+	i=$((i+1)) #INCREMENT I
+done
+
+cd $pwd

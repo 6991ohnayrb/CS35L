@@ -1,0 +1,34 @@
+ASSIGNMENT 4 - HOMEWORK
+
+git checkout v3.0 quote
+  checkout v3.0 into quote
+patch -p1 < ../../quote-3.0-patch.txt
+  patch with the quote-3.0-patch.txt we created earlier
+emacs ChangeLog
+C-x 4 a
+  enter changes made to cmp.c, diff.c, diff3.c, dir.c, sdiff.c, util.c
+C-x C-c
+  exit Emacs
+git commit -F ChangeLog
+  [detached HEAD 806b846] 2016-10-20  Bryan Ho  <bryanh@lnxsrv01.seas.ucla.edu>
+   Committer: Bryan Ho <bryanh@lnxsrv01.seas.ucla.edu>
+  Your name and email address were configured automatically based
+  on your username and hostname. Please check that they are accurate.
+  You can suppress this message by setting them explicitly:
+
+      git config --global user.name "Your Name"
+      git config --global user.email you@example.com
+
+  After doing this, you may fix the identity used for this commit with:
+
+      git commit --amend --reset-author
+
+   6 files changed, 43 insertions(+), 43 deletions(-)
+   commit changes made
+git format-patch -1 --stdout > format-patch.txt
+  gets the format patch saved into format-patch.txt
+cd ~eggert/src/gnu/emacs
+  cd into specified directory
+gitk
+  launch gitk
+  had to run in xquartz

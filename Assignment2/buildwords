@@ -1,0 +1,37 @@
+#! /bin/bash
+
+#removes everything up to the first hawaiian word
+sed '/<!DOCTYPE/,/Adopt<\/td>/d' |
+
+#removes everything after the last hawiian word
+sed '/<\/table>/,/<\/html>/d' |
+
+#remove all english words
+sed '/<tr>/,/<\/td>/d' |
+
+#remove everything in < >
+sed 's/<[^>]*>//g' |
+
+#separates words with spaces
+sed 's/ /\n/g' |
+
+#separates words with commas
+sed 's/,/\n/g' |
+
+#translates everything to lowercase
+tr '[:upper:]' '[:lower:]' |
+
+#replace grave with single quotes
+sed s/\`/\'/g |
+
+#removes words with -
+sed '/-/d' |
+
+#remove all lines with possible english characters
+tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+
+#removes all new lines
+sed '/^$/d' |
+
+#sorts unique words A-Z
+sort -u

@@ -1,0 +1,208 @@
+ASSIGNMENT 2 - LAB
+
+pwd is ~/Desktop/CS35L/Assignment2
+sort /usr/share/dict/words > words
+	sorts specified words file, outputs result to our pwd under words
+wget http://web.cs.ucla.edu/classes/fall16/cs35L/assign/assign2.html
+	gets content from the html page and saves it to assign2.html
+cat assign2.html | tr -c 'A-Za-z' '[\n*]'
+	removes all non-alphabetic characters and replaces them with a \n
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]'
+	same as the previous one but does not create multiple \n
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort
+	sorts the previous list of words
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u
+	same as previous one but only shows unique words
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words
+	compares sorted assign2.html words without duplicates to words
+cat assign2.html | tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 -words
+	same as the previous but only shows lines unique to assign2.html words
+
+
+----- buildwords script -----
+#! /bin/bash
+
+#removes everything up to the first hawaiian word
+sed '/<!DOCTYPE/,/Adopt<\/td>/d' |
+
+#removes everything after the last hawiian word
+sed '/<\/table>/,/<\/html>/d' |
+
+#remove all english words
+sed '/<tr>/,/<\/td>/d' |
+
+#remove everything in < >
+sed 's/<[^>]*>//g' |
+
+#separates words with spaces
+sed 's/ /\n/g' |
+
+#separates words with commas
+sed 's/,/\n/g' |
+
+#translates everything to lowercase
+tr '[:upper:]' '[:lower:]' |
+
+#replaces grave with single quote
+sed s/\`/\'/g |
+
+#removes word with -
+sed '/-/d' |
+
+#remove all lines with possible english characters
+tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+
+#removes all new lines
+sed '/^$/d' |
+
+#sorts unique words A-Z
+sort -u
+
+
+----- check assign2.html with hawaiian words -----
+cat assign2.html | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z' '[\n*]' |
+ 	sort -u > assign2words
+this returns all individual words lower cased from assign2.html
+new i use the assign2words as an input for the comm command
+cat assign2words | comm -23 - hwords | wc -w
+this returns the number of misspelled words which is 405
+
+
+----- check assign2.html with english words -----
+cat /usr/share/dict/words | sort -u > words
+this copies the content from the english dictionary and sorts them
+using a similar command to the above, i get a count of mispelled english words
+cat assign2words | comm -23 - words | wc -w
+this returns the number of mispelled words which is 38
+
+
+----- misspelled in english but not hawaiian -----
+cat assign2words | comm -23 - words > misspelledE
+this gets misspelled english words in a file
+cat misspelledE | tr -cs "pk\'mnwlhaeiou" '[\n*]' | sort -u |
+ 	comm -12 - hwords > f1
+wc -w f1
+returns 6 which is the number of misspelled words in english but not hawaiian
+e
+halau
+i
+lau
+po
+wiki
+
+
+----- misspelled in hawaiian but not english -----
+cat assign2words | comm -23 - hwords > misspelledH
+this gets misspelled english words in a file
+misspelledH | tr -cs "A-Za-z" '[\n*]' | sort -u | comm -12 - words > f2
+wc -w f2
+returns 109 which is the number of misspelled words in hawaiian but not english
+a
+ail
+ain
+ake
+al
+ale
+alen
+all
+amine
+amp
+ample
+an
+aph
+awk
+e
+ea
+ee
+el
+em
+emp
+en
+ep
+epa
+h
+ha
+han
+hap
+hawaiian
+he
+hei
+hell
+hem
+hen
+hi
+hin
+ho
+how
+howe
+ia
+ie
+ii
+ile
+imp
+in
+ion
+iou
+k
+keep
+kin
+l
+lan
+le
+lea
+li
+like
+line
+link
+ln
+lo
+lowe
+m
+mail
+man
+me
+men
+mi
+ml
+mo
+mp
+n
+name
+ne
+nee
+no
+non
+nu
+num
+o
+om
+on
+one
+op
+ope
+open
+own
+p
+paul
+pe
+pell
+people
+plea
+pu
+u
+ui
+ula
+ule
+ume
+ump
+un
+uni
+w
+wa
+wan
+we
+wh
+wha
+who
+wi
+wo

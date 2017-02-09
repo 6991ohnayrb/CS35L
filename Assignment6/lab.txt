@@ -1,0 +1,50 @@
+ASSIGNMENT 6 - LAB
+
+tr2b.c is implementing the tr command using getchar and putchar commands
+tr2u.c is implementing the tr command using read and write commands
+
+touch test.txt
+  I created a test file to test inputs.
+  Used emacs to change content to "abcdef"
+gcc -o tr2b.out tr2b.c
+cat test.txt | ./tr2b.out "abc" "def"
+  output is "defdef" which is expected
+gcc -o tr2u.out tr2u.c
+cat test.txt | ./tr2u.out "abc" "def"
+  output is "defdef" which is expected
+
+---STRACE---
+
+od -An -tf -N 5000000 < /dev/urandom | tr -s ' ' '\n' > file.txt
+  /dev/urandom is a large file
+man strace
+  first take a look at the manual and see what options are available and how to use
+
+strace -o result.txt -c ./tr2b.out "a" "b" < file.txt > tmp.txt
+  runs strace and copies into tmp.txt
+  470 calls made
+strace -o result.txt -c ./tr2b.out "c" "d" < file.txt
+  runs strace and copies to terminal
+  625250 calls made
+
+strace -o result.txt -c ./tr2u.out "a" "b" < file.txt > tmp.txt
+  runs strace and copies into tmp.txt
+  ...still running after several minutes
+  it is safe to assume it is making many more system calls than the tr2b.out version
+strace -o result.txt -c ./tr2u.out "c" "d" < file.txt
+  runs strace and copies to terminal
+  it is safe to assume it is making many more system calls than the tr2b.out version
+
+---TIME---
+time cat file.txt | ./tr2b.out "a" "b"
+  this gets the time for running tr2b.out
+  real	0m16.918s
+  user	0m0.871s
+  sys	0m1.588s
+time cat file.txt | ./tr2u.out "a" "b"
+  this gets the time for running tr2u.out
+  real	0m19.610s
+  user	0m0.864s
+  sys	0m18.903s
+  we can see here that real and user time do not have significant differences, however sys time
+  is significantly more in the unbuffered version due to system calls reading each character in

@@ -1,0 +1,44 @@
+ASSIGNMENT1 - LAB
+
+1. man -k [keyword] shows all mans with the [keyword]
+2. /bin/cp is where cp is located
+   /usr/bin/wc is where wc is located
+3. X - portable window system
+   w - list of logged in users
+   [ - shell program
+4. running ls -al /usr/bin/emacs, I see that /etc/alternatives/emacs is
+   actually run
+5. g+s sets the group id on current directory
+   o-x removes execute permissions from the owner
+6. This is in days and find will search everything up to 22 * 24 hours before
+   find -mtime -22
+7. Same as above but where it searches directories only in same time period
+   find / -type d -mtime -22
+8. 19 symbolic links
+9. ls -lt
+   stdio-lock.h is the oldest file
+10. the locale command gets its data from LC_* enviroment variables
+11. rmail-sort-by-subject
+    rmail-sort-by-recipient
+    rmail-sort-by-lines
+    rmail-sort-by-labels
+    rmail-sort-by-date
+    rmail-sort-by-correspondent
+    rmail-sort-by-author
+    sort-paragraphs
+    sort-pages
+    sort-numeric-fields
+    sort-lines
+    sort-fields
+    sort-columns
+12. C-a beginning of line
+    C-b back one charcter
+    C-d delete character
+    C-e end of line
+    C-f forward one character
+    C-g cancel
+    G-h backspace
+13. G-g cancels the command that is currently running or being typed
+14. Puts last kill into buffer
+15. dired lists some subdirectories where as ls -l only lists what is in the
+    present directory

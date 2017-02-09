@@ -1,0 +1,12 @@
+ASSIGNMENT 3 - HOMEWORK QUESTIONS
+
+-----Questions-----
+1. Brady's Patch removed "case_long_iso_time_style:" because it was not needed
+   The case would never be reached.
+2. We would have to watch our for different locales. There is no localization
+   enabled in this.
+3. Running the script on /dev/null we get an "IndexError: list index out of
+   range" exception.
+4. Running using Python3, we see an error on line 65. It shows that "except
+   IOError as (errno, strerror):" is not the correct syntax for Python3. I can
+   determine that Python3 and Python2 have different syntaxes. 

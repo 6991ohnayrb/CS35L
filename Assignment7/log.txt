@@ -1,0 +1,32 @@
+ASSIGNMENT 7 - LAB
+
+sort --version
+  lnxsrv02 returned 8.4 so I switched to lnxsrv07 to see
+  this returned 8.22 which is more recent than 8.6
+od -An -t f8 -N 80000000 < /dev/urandom | tr -s ' ' '\n' > random.txt
+  used dev/urandom as specified in the assignment
+  80,000,000 because 8 bytes each
+less random.txt
+  confirm that random.txt contains data of the correct format
+
+---SORTING---
+time -p sort -g random.txt > /dev/null
+  real 36.46
+  user 199.72
+  sys 0.56
+time -p sort -g --parallel=2 random.txt > /dev/null
+  real 102.60
+  user 196.84
+  sys 0.27
+time -p sort -g --parallel=4 random.txt > /dev/null
+  real 58.82
+  user 199.36
+  sys 0.44
+time -p sort -g --parallel=8 random.txt > /dev/null
+  real 36.28
+  user 199.90
+  sys 0.53
+
+As we can see, with the initial sort, it takes a while. Then with 2 threads,
+it does not improve speed, but slowly with increased threads it improves speed
+but not proportionally. This is because more threads will require more buffer.

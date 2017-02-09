@@ -1,0 +1,71 @@
+ASSIGNMENT 4 - LAB
+
+git clone git://git.savannah.gnu.org/diffutils.git
+  clone repository as provided on assignment
+cd diffutils
+  change directory into the just cloned repository
+git log > ../git-log.txt
+  gets git log and puts into pwd's parent directory under git-log.txt
+git tag > ../git-tag.txt
+  gets git tag and puts into pwd's parent directory under git-tag.txt
+git log --grep="quote 'like"
+  greps the result of the git log to find specified commit title
+  we see this commit has commit id <62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f>
+git show 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f > ../quote-patch.txt
+  puts patch into pwd's parent directory under quote-patch.txt
+git checkout v3.0
+  checks out version 3.0 from the repository
+patch -p1 < ../quote-patch.txt
+  patches with the provide patch file
+  there were a few files to skip on the patches because file was not found
+git status
+  shows a list of all changed files and untracked files
+open all files not *.c in emac
+  C-x v = C-x v u to undo the changes
+  C-x C-c to exit
+  yes to save
+git status
+  at this point I only see 6 modified files, matching the assignment's info
+  cmp.c, diff.c, diff3.c, dir.c, sdiff.c, and util.c were the modified files
+find . -name "*.c.rej"
+  this step is just to be careful I do not overlook any of the *.c.rej files
+  we see that there are two files: ./src/diff.c.rej and ./src/diff3.c.rej
+less src/diff.c.rej
+  we see there are 5 changes
+  I proceed to make all 5 changes
+less src/diff3.c.rej
+  we see there is 1 change
+  I proceed to make the 1 change
+git clean -f
+  remove all untracked files
+git status
+  shows only 6 files modified
+git diff > ../quote-3.0-patch.txt
+  this saves the diffs into pwd's parent directory under quote-3.0-patch.txt
+cat ../quote-3.0-patch.txt | wc -l
+  this outputs 326 which is reasonable given based on the 300-400 range from
+  the assignment
+./bootstrap
+./configure
+make
+make check
+  configure and build the diffutils
+diff . -
+  verify that the expected quotes are present
+diff . --help
+  verify that the expected quotes are present
+mkdir ../diffutils-3.0
+mkdir ../diffutils-3.0-patch
+  create directories to save different copies of src
+cp -r src/ ../diffutil-3.0-patch/
+  copies files from src to ../diffutils-3.0.patch
+git checkout v3.0
+  checkout version 3.0 again
+cp -r src/ ../diffutils-3.0/
+  copy files from src in version 3.0 to ../diffutils-3.0
+diffutils-3.0-patch/diff -pru diffutils-3.0 diffutils-3.0-patch/ >
+  quote-3.0-test.txt
+  compares code and puts diff into quote-3.0-test.txt
+diff quote-3.0-test.txt quote-3.0-patch.txt
+  comparing quote-3.0-test.txt and quote-3.0-patch.txt, the files clearly not
+  identical. the changes are not innocuous either.

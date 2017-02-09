@@ -1,0 +1,44 @@
+ASSIGNMENT 9 - LAB
+
+I installed Ubuntu.
+After the installation process by Ubuntu, I run the following commands.
+
+sudo apt-get update
+sudo apt-get install openssh-server
+sudo apt-get install openssh-client
+
+ifconfig
+  IP address is: 10.0.2.15
+
+sudo useradd -d /home/andrew -m andrew
+  create user for my partner Andres
+sudo passwd andrew
+  set password for newly created user
+  password set as "abc123"
+cd /home/andrew
+  change directory to the newly created user's directory
+mkdir .ssh
+  create hidden directory for Andrew
+ls -a
+  confirm directory is made correctly
+sudo chown -R andrew .ssh
+  change owner of the created directory
+  new directory owner is andrew
+ls -al
+  a option to display hidden files
+  l option to see owner to confirm andrew is the owner
+
+STEPS FOR MY PARTNER:
+ping 10.0.2.15
+  confirm the server is "ping-able"
+ssh-keygen
+  generates public/private key pair
+ssh-copy-id -i andrew@10.0.2.15
+  copy the generated key to my server
+ssh-add
+  adds RSA or DSA identity to the authentication agent
+ssh andrew@10.0.2.15
+  now that the key is generated and copied to the server, we try to ssh
+  this is now successful
+ssh -X andrew@10.0.2.15
+  this does ssh with x-forwarding

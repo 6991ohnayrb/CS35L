@@ -1,0 +1,26 @@
+ASSIGNMENT 3 - LAB
+
+-----Reproduces Issue-----
+wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz
+  this retrieves the coreutils-7.6
+tar -zxf coreutils-7.6.tar.gz
+  this unzips the downloaded tar.gz file
+./configure --prefix="$PWD/build"
+  generates the makefile in build directory
+make
+make install
+export LC_ALL='en_US.UTF-8'
+  change locale to US.UTF-8
+./build/bin/ls -l
+  shows "incorrect" ls -l format
+  confirmed that date is now in the format YYYY-MM-DD
+
+-----Brady's Patch-----
+use Brady's Patch
+remove lines denoted with [-] and added lines denoted with [+]
+changes were made into ls.c
+run make command again
+less commands because only ls.c was modified
+run make install
+test this by running ./build/bin/ls -l
+  confirmed that date is now in the format Month Day Year

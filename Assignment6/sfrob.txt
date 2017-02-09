@@ -1,0 +1,72 @@
+ASSIGNMENT 6 - SFROB.TXT
+
+I created several files, file100.txt file 1000.txt file10000.txt file100000.txt
+Each file has a number of "My name is Bryan" copied in it
+
+---file100.txt---
+sfrob.out
+  real	0m0.002s
+  user	0m0.001s
+  sys	0m0.001s
+sfrobu.out
+  Comparisons: 2798
+  real	0m0.005s
+  user	0m0.000s
+  sys	0m0.005s
+sfrobs
+  real	0m0.005s
+  user	0m0.005s
+  sys	0m0.003s
+
+
+---file1000.txt---
+sfrob.out
+  real	0m0.007s
+  user	0m0.005s
+  sys	0m0.001s
+sfrobu.out
+  Comparisons: 39373
+  real	0m0.034s
+  user	0m0.006s
+  sys	0m0.029s
+sfrobs
+  real	0m0.011s
+  user	0m0.009s
+  sys	0m0.002s
+
+
+---file10000.txt---
+sfrob.out
+  real	0m0.065s
+  user	0m0.056s
+  sys	0m0.002s
+sfrobu.out
+  Comparisons: 509552
+  real	0m0.336s
+  user	0m0.066s
+  sys	0m0.271s
+sfrobs
+  real	0m0.072s
+  user	0m0.058s
+  sys	0m0.005s
+
+
+---file100000.txt---
+sfrob.out
+  real	0m1.128s
+  user	0m0.637s
+  sys	0m0.016s
+sfrobu.out
+  Comparisons: 6499604
+  real	0m2.456s
+  user	0m0.483s
+  sys	0m1.987s
+sfrobs
+  real	0m1.173s
+  user	0m0.587s
+  sys	0m0.033s
+
+We see there is a linear relationship between the number of inputs and the
+amount of comparisons made. sfrobu.out and sfrobs take more time than sfrob.out
+in the system. This is because in sfrobu.out there are many system calls and
+sfrobs is a script so it is an interpreted language. 

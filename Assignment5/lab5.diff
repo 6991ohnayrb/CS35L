@@ -1,0 +1,15 @@
+2016-10-28  Bryan Ho <bryanh@lnxsrv02.seas.ucla.edu>
+	*timespec.h: changed return value of diff
+
+--- coreutils-with-bug/lib/timespec.h	2016-10-28 12:36:32.384824000 -0800
++++ coreutils-bug/coreutils-with-bug/lib/timespec.h	2005-09-21 23:05:39.000000000 -0700
+@@ -45,9 +45,7 @@
+ static inline int
+ timespec_cmp (struct timespec a, struct timespec b)
+ {
+-  int diff = a.tv_sec - b.tv_sec;
++  int diff;
++  if (a.tv_sec > b.tv_sec) diff = 1;
++  else diff = 0;
+   return diff ? diff : a.tv_nsec - b.tv_nsec;
+ }

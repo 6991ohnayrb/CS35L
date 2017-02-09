@@ -1,0 +1,15 @@
+Description of SubWindows in Gitk
+
+top left
+  shows the tree and branches of repository
+  we can see where commits were made and merges made
+top middle
+  we see the author of the corresponding commit
+top right
+  we see the date and time of the commit
+  YYYY-MM-DD HH:MM:SS
+bottom left
+  we see more information about the author and branches
+  if the selected is not a merge, we see change logs as well
+bottom right
+  we see additional comments made by the author
